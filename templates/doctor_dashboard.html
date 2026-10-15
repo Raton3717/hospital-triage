@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Doctor Panel</title>
+    <style>
+        body { background-color: #111827; color: white; font-family: sans-serif; margin: 0; }
+        nav { background: #1f2937; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #374151; }
+        .container { max-width: 1200px; margin: 30px auto; padding: 20px; background: #1f2937; border-radius: 12px; border: 1px solid #374151; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #374151; }
+        th { background: #374151; }
+        select, textarea, button { padding: 8px; background: #374151; color: white; border: 1px solid #4b5563; border-radius: 6px; }
+        button { background: #059669; font-weight: bold; cursor: pointer; border: none; padding: 8px 16px; }
+        button:hover { background: #047857; }
+    </style>
+</head>
+<body>
+    <nav><h2>👨‍⚕️ Clinician Consultation Desk (Doctor: {{ session['username'] }})</h2><a href="/logout" style="color:white; background:#dc2626; padding:8px 15px; border-radius:6px; text-decoration:none; font-weight:bold;">Sign Out</a></nav>
+    <div class="container">
+        <h3>Patients Waiting in Triage Matrix</h3>
+        <table>
+            <thead><tr><th>ID</th><th>Patient Details</th><th>Vitals Signed</th><th>ESI Rank</th><th>Actions</th></tr></thead>
+            <tbody>
+                {% for p in patients %}
+                <tr>
+                    <td>#{{ p.id }}</td>
+                    <td><b>{{ p.name }}</b> ({{ p.age }}Y / {{ p.gender }})</td>
+                    <td style="font-family:monospace; font-size:12px; color:#9ca3af;">BP: {{p.bp_sys}}/{{p.bp_dia}} | O2: {{p.spo2}}% | Temp: {{p.temperature}}F</td>
+                    <td><span style="background:#991b1b; padding:4px 8px; border-radius:4px; font-size:12px; font-weight:bold;">Tier {{ p.triage_priority }}</span></td>
+                    <td>
+                        {% if p.status == 'Waiting' %}
+                        <form action="/call_patient/{{ p.id }}" method="POST" style="display:inline-block;">
+                            <select name="chamber" required><option>Chamber 1</option><option>Chamber 2</option><option>Chamber 3</option></select>
+                            <button type="submit">Call to Chamber</button>
+                        </form>
+                        {% elif p.status == 'Active' %}
+                        <form action="/create_prescription/{{ p.id }}" method="POST" style="margin-top:10px;">
+                            <textarea name="diagnosis" placeholder="Diagnosis Notes" required style="width:100%; min-height:40px; margin-bottom:5px;"></textarea>
+                            <textarea name="medications" placeholder="Medications & Advice" required style="width:100%; min-height:40px; margin-bottom:5px;"></textarea>
+                            <button type="submit" style="background:#2563eb;">Complete & Print Prescription</button>
+                        </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

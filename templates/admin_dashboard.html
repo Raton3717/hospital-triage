@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <style>
+        body { background-color: #111827; color: white; font-family: sans-serif; margin: 0; }
+        nav { background: #1f2937; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #374151; }
+        .container { max-width: 1200px; margin: 30px auto; padding: 20px; background: #1f2937; border-radius: 12px; border: 1px solid #374151; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #374151; }
+        th { background: #374151; }
+    </style>
+</head>
+<body>
+    <nav><h2>🛡️ Central Command & Analytical Dashboard (Admin)</h2><a href="/logout" style="color:white; background:#dc2626; padding:8px 15px; border-radius:6px; text-decoration:none; font-weight:bold;">Sign Out</a></nav>
+    <div class="container">
+        <h3>Master Encounter Audit Trail Log</h3>
+        <table>
+            <thead><tr><th>ID</th><th>Patient Name</th><th>Acuity Tier</th><th>Lifecycle State</th><th>Location Node</th></tr></thead>
+            <tbody>
+                {% for p in patients %}
+                <tr>
+                    <td>#{{ p.id }}</td>
+                    <td><b>{{ p.name }}</b> ({{ p.age }}Y)</td>
+                    <td>Tier {{ p.triage_priority }}</td>
+                    <td><b>{{ p.status }}</b></td>
+                    <td>{{ p.assigned_chamber if p.assigned_chamber else 'Not Assigned' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

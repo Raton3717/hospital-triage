@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Patient - Hospital Triage System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex items-center justify-center p-6">
+
+    <div class="bg-slate-800 border border-slate-700 rounded-2xl p-8 shadow-2xl w-full max-w-lg">
+        <h2 class="text-2xl font-bold text-amber-400 mb-6 border-b border-slate-700 pb-3">Edit Patient Information</h2>
+        
+        <form method="POST" class="space-y-4">
+            <div>
+                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Patient Name</label>
+                <input type="text" name="name" value="{{ patient.name }}" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500">
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Age</label>
+                    <input type="number" name="age" value="{{ patient.age }}" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Gender</label>
+                    <select name="gender" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500">
+                        <option value="Male" {% if patient.gender == 'Male' %}selected{% endif %}>Male</option>
+                        <option value="Female" {% if patient.gender == 'Female' %}selected{% endif %}>Female</option>
+                        <option value="Other" {% if patient.gender == 'Other' %}selected{% endif %}>Other</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">BP (Systolic)</label>
+                    <input type="number" name="bp_sys" value="{{ patient.bp_sys }}" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">BP (Diastolic)</label>
+                    <input type="number" name="bp_dia" value="{{ patient.bp_dia }}" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-3 gap-2">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">SpO2 (%)</label>
+                    <input type="number" name="spo2" value="{{ patient.spo2 }}" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-2 text-white focus:outline-none focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Pulse</label>
+                    <input type="number" name="pulse" value="{{ patient.pulse }}" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-2 text-white focus:outline-none focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Temp (°F)</label>
+                    <input type="number" step="0.1" name="temperature" value="{{ patient.temperature }}" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-2 text-white focus:outline-none focus:border-blue-500">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Emergency Priority (Triage Tier)</label>
+                <select name="manual_priority" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500 font-semibold">
+                    <option value="auto">Keep Auto (Recalculate Vitals)</option>
+                    <option value="1" {% if patient.triage_priority == 1 %}selected{% endif %} class="text-red-400">Tier 1 - Immediate Emergency</option>
+                    <option value="2" {% if patient.triage_priority == 2 %}selected{% endif %} class="text-orange-400">Tier 2 - Urgent</option>
+                    <option value="3" {% if patient.triage_priority == 3 %}selected{% endif %} class="text-yellow-400">Tier 3 - Standard</option>
+                    <option value="4" {% if patient.triage_priority == 4 %}selected{% endif %} class="text-emerald-400">Tier 4/5 - Non-Urgent</option>
+                </select>
+            </div>
+
+            <div class="flex space-x-4 pt-4">
+                <button type="submit" class="flex-1 bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 rounded-lg transition shadow-lg">
+                    Update Patient
+                </button>
+                <a href="/dashboard" class="flex-1 bg-slate-700 hover:bg-slate-600 text-center text-white font-bold py-3 rounded-lg transition">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>
